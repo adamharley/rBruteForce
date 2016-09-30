@@ -47,7 +47,7 @@ class RBruteForceComponent extends Component {
 
         if($this->options['attemptLog'] == 'all' ||
 				($this->options['attemptLog'] == 'beforeBan' && !$this->isBanned)){
-			$attempt = ['ip' => $this->request->env('REMOTE_ADDR'),
+			$attempt = ['ip' => $this->request->clientIp(),
 						'url' => $this->request->url,
 						'expire' => strtotime('+' . $this->options['expire']),
 						];
@@ -90,7 +90,7 @@ class RBruteForceComponent extends Component {
 	
 	public function getCount(){
 		$count = $this->RBruteForce->find()
-				->where(['ip' => $this->request->env('HTTP_HOST')])
+				->where(['ip' => $this->request->host()])
 				->andWhere(['expire >= ' => time()])
 				->andWhere(['expire <= ' => strtotime('+' . $this->options['expire'])]);
 		if($this->options['checkUrl']){
